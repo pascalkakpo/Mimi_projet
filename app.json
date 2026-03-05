@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MonProjet",
-    "slug": "MonProjet",
+    "slug": "monprojet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.pascal.essaie",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -47,7 +48,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "f22e7897-63c7-47ed-8ef9-8639b6a39ee3"
+        "projectId": "1:205993429155:android:2fd61cebc9ef91cb0f5716"
       }
     }
   }
