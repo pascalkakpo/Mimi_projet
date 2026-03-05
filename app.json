@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MonProjet",
-    "slug": "monprojet",
+    "slug": "MonProjet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -46,7 +46,11 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {}
-    }
+      "router": {},
+      "eas": {
+        "projectId": "f22e7897-63c7-47ed-8ef9-8639b6a39ee3"
+      }
+    },
+    "owner": "pachecopmpmpgmail.com"
   }
 }
