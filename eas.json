@@ -1,13 +1,11 @@
 {
+  "cli": {
+    "version": ">= 6.7.0"
+  },
   "build": {
     "production": {
       "android": {
-        "buildType": "apk",
-        "cache": {
-          "npm": true,
-          "yarn": true,
-          "gradle": true
-        }
+        "buildType": "apk"
       }
     }
   }
