@@ -11,59 +11,34 @@ jobs:
 
     steps:
 
-      # 1️⃣ Récupérer le projet
       - name: Checkout repository
         uses: actions/checkout@v3
 
-
-      # 2️⃣ Installer Node
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-
-      # 3️⃣ Cache npm pour accélérer
-      - name: Cache npm
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-
-      # 4️⃣ Installer dépendances (plus rapide que npm install)
       - name: Install dependencies
         run: npm ci
 
-
-      # 5️⃣ Installer EAS CLI
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
-
-      # 6️⃣ Lancer le build Android
-      - name: Build Android with EAS
+      - name: Build Android
         run: eas build --platform android --profile production --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-
-      # 7️⃣ Télécharger le dernier build
       - name: Download latest APK
         run: eas build:download --platform android --latest --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-
-      # 8️⃣ Installer Firebase CLI
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-
-      # 9️⃣ Envoyer sur Firebase App Distribution
-      - name: Upload APK to Firebase
+      - name: Upload to Firebase
         run: |
           firebase appdistribution:distribute *.apk \
           --app ${{ secrets.FIREBASE_APP_ID }} \
