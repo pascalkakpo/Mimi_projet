@@ -1,13 +1,16 @@
 {
+  "cli": {
+    "version": ">= 3.0.0"
+  },
   "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "production": {
       "android": {
-        "buildType": "apk",
-        "cache": {
-          "npm": true,
-          "yarn": true,
-          "gradle": true
-        }
+        "buildType": "apk"
       }
     }
   }
