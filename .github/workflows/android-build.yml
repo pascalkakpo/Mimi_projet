@@ -4,53 +4,50 @@ on:
   push:
     branches:
       - main
-      - develop
-      - 'feature/**'
 
 jobs:
-  build-and-distribute:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout du code
-      - name: Checkout code
+
+      # 1️⃣ Télécharger le projet
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Installer Ruby pour Fastlane
+      # 2️⃣ Installer Java (requis pour Android)
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3️⃣ Installer Ruby pour Fastlane
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'  # éviter warning Fastlane
+          ruby-version: '3.2'
 
-      # 3️⃣ Installer les dépendances
+      # 4️⃣ Installer dépendances
       - name: Install dependencies
         run: |
           gem install bundler
           bundle install
           npm install -g firebase-tools
 
-      # 4️⃣ Rendre gradlew exécutable
-      - name: Make gradlew executable
-        run: chmod +x ./android/gradlew
+      # 5️⃣ Donner permission au gradlew
+      - name: Grant permission to Gradle
+        run: chmod +x android/gradlew
 
-      # 5️⃣ Setup Android SDK (nécessaire pour Gradle)
-      - name: Setup Android SDK
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 33
-          target: google_apis
-          arch: x86_64
-          force-avd-creation: true
-          script: echo "SDK Ready" # obligatoire pour l'action
+      # 6️⃣ Build APK
+      - name: Build APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
 
-      # 6️⃣ Build et distribution via Fastlane
-      - name: Build & distribute via Fastlane
+      # 7️⃣ Distribution Firebase
+      - name: Distribute to Firebase
+        run: bundle exec fastlane android distribute
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_TESTERS: ${{ secrets.FIREBASE_TESTERS }}
-          KEYSTORE_PATH: ${{ secrets.KEYSTORE_PATH }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          bundle exec fastlane android distribute
