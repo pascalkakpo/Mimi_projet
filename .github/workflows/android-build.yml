@@ -29,7 +29,11 @@ jobs:
           bundle install
           npm install -g firebase-tools
 
-      # 4️⃣ Setup Android SDK
+      # 4️⃣ Rendre gradlew exécutable
+      - name: Make gradlew executable
+        run: chmod +x ./android/gradlew
+
+      # 5️⃣ Setup Android SDK (nécessaire pour Gradle)
       - name: Setup Android SDK
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -39,7 +43,7 @@ jobs:
           force-avd-creation: true
           script: echo "SDK Ready" # obligatoire pour l'action
 
-      # 5️⃣ Build et distribution via Fastlane
+      # 6️⃣ Build et distribution via Fastlane
       - name: Build & distribute via Fastlane
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}

@@ -1,5 +1,3 @@
-# fastlane/Fastfile
-
 default_platform(:android)
 
 platform :android do
@@ -24,7 +22,7 @@ platform :android do
       release_notes: "Nouvelle version automatique",
       apk_path: apk_path,
       upload_timeout: 1200, # 20 minutes
-      debug: true           # voir tous les logs d'upload
+      debug: true           # pour voir tous les logs d'upload
     )
 
   end
