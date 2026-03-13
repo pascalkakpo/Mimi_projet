@@ -1,31 +1,32 @@
-default_platform(:android)
+name: Build & Distribute APK
 
-platform :android do
+on:
+  push:
+    branches:
+      - main
 
-  desc "Build APK et envoyer sur Firebase"
-  lane :distribute do
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-    # ── Build debug APK
-    gradle(
-      task: "assembleDebug",
-      project_dir: "./android",
-      print_command: true
-    )
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # ── Chemin exact de l'APK généré
-    apk_path = "./android/app/build/outputs/apk/debug/app-debug.apk"
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
 
-    # ── Upload sur Firebase App Distribution avec token
-    firebase_app_distribution(
-      app: ENV["FIREBASE_APP_ID"],          # Firebase App ID (depuis GitHub Secrets)
-      testers: ENV["FIREBASE_TESTERS"],     # Emails des testeurs séparés par des virgules
-      firebase_cli_token: ENV["FIREBASE_TOKEN"], # Token généré avec 'firebase login:ci'
-      release_notes: "Nouvelle version automatique",
-      apk_path: apk_path,
-      upload_timeout: 1200, # 20 minutes
-      debug: true           # Affiche tous les logs d'upload
-    )
+      - name: Install dependencies
+        run: |
+          gem install fastlane
 
-  end
+      - name: Set environment variables
+        run: |
+          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "FIREBASE_TESTERS=${{ secrets.FIREBASE_TESTERS }}" >> $GITHUB_ENV
+          echo "FIREBASE_TOKEN=${{ secrets.FIREBASE_TOKEN }}" >> $GITHUB_ENV
 
-end
+      - name: Build and Distribute APK
+        run: fastlane android distribute
