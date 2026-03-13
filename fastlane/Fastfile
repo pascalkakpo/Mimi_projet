@@ -18,12 +18,12 @@ platform :android do
     # ── Upload sur Firebase App Distribution avec token
     firebase_app_distribution(
       app: ENV["FIREBASE_APP_ID"],          # Firebase App ID (depuis GitHub Secrets)
-      testers: ENV["FIREBASE_TESTERS"],     # Liste des emails testeurs (depuis GitHub Secrets)
+      testers: ENV["FIREBASE_TESTERS"],     # Emails des testeurs séparés par des virgules
       firebase_cli_token: ENV["FIREBASE_TOKEN"], # Token généré avec 'firebase login:ci'
       release_notes: "Nouvelle version automatique",
       apk_path: apk_path,
       upload_timeout: 1200, # 20 minutes
-      debug: true           # pour voir tous les logs d'upload
+      debug: true           # Affiche tous les logs d'upload
     )
 
   end
