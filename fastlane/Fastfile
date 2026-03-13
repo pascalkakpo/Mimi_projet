@@ -1,26 +1,30 @@
+# fastlane/Fastfile
+
+default_platform(:android)
+
 platform :android do
 
   desc "Build APK et envoyer sur Firebase"
   lane :distribute do
 
-    # Build debug APK
+    # ── Build debug APK
     gradle(
       task: "assembleDebug",
       project_dir: "./android",
       print_command: true
     )
 
-    # Chemin exact de l'APK généré
+    # ── Chemin exact de l'APK généré
     apk_path = "./android/app/build/outputs/apk/debug/app-debug.apk"
 
-    # Upload sur Firebase App Distribution
+    # ── Upload sur Firebase App Distribution
     firebase_app_distribution(
-      app: "1:205993429155:android:2fd61cebc9ef91cb0f5716",
-      testers: "kakpopascl610@gmail.com",
+      app: ENV["FIREBASE_APP_ID"],
+      testers: ENV["FIREBASE_TESTERS"],
       release_notes: "Nouvelle version automatique",
       apk_path: apk_path,
       upload_timeout: 1200, # 20 minutes
-      debug: true           # pour voir tous les logs d'upload
+      debug: true           # voir tous les logs d'upload
     )
 
   end

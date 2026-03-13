@@ -16,11 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Installer Ruby (pour Fastlane)
+      # 2️⃣ Installer Ruby pour Fastlane
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.2'  # éviter warning Fastlane
 
       # 3️⃣ Installer les dépendances
       - name: Install dependencies
@@ -29,22 +29,17 @@ jobs:
           bundle install
           npm install -g firebase-tools
 
-      # 4️⃣ Setup Java & Gradle
-      - name: Setup JDK
-        uses: actions/setup-java@v3
+      # 4️⃣ Setup Android SDK
+      - name: Setup Android SDK
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: true
+          script: echo "SDK Ready" # obligatoire pour l'action
 
-      - name: Install Gradle
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget https://services.gradle.org/distributions/gradle-8.3-bin.zip -P /tmp
-          unzip -qq /tmp/gradle-8.3-bin.zip -d /opt/gradle
-          echo "/opt/gradle/gradle-8.3/bin" >> $GITHUB_PATH
-
-      # 5️⃣ Build et distribution automatique via Fastlane
+      # 5️⃣ Build et distribution via Fastlane
       - name: Build & distribute via Fastlane
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
@@ -54,13 +49,4 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          # Incrémentation automatique du versionCode
-          bundle exec fastlane android bump_version
-
-          # Build Debug et upload Firebase
-          bundle exec fastlane android distribute_debug
-
-          # Build Release et upload Firebase si push sur main
-          if [[ $GITHUB_REF == "refs/heads/main" ]]; then
-            bundle exec fastlane android distribute_release
-          fi
+          bundle exec fastlane android distribute
