@@ -11,42 +11,52 @@ jobs:
 
     steps:
 
-      # 1️⃣ Télécharger le projet
+      # 1️⃣ Télécharger le code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Installer Java (requis pour Android)
+      # 2️⃣ Installer Node (OBLIGATOIRE pour React Native / Expo)
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 3️⃣ Installer dépendances Node
+      - name: Install npm dependencies
+        run: npm install
+
+      # 4️⃣ Installer Java pour Android
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      # 3️⃣ Installer Ruby pour Fastlane
+      # 5️⃣ Installer Ruby pour Fastlane
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
 
-      # 4️⃣ Installer dépendances
+      # 6️⃣ Installer bundler + firebase
       - name: Install dependencies
         run: |
           gem install bundler
           bundle install
           npm install -g firebase-tools
 
-      # 5️⃣ Donner permission au gradlew
-      - name: Grant permission to Gradle
+      # 7️⃣ Donner permission au gradle wrapper
+      - name: Grant permission to gradlew
         run: chmod +x android/gradlew
 
-      # 6️⃣ Build APK
+      # 8️⃣ Build APK
       - name: Build APK
         run: |
           cd android
           ./gradlew assembleDebug
 
-      # 7️⃣ Distribution Firebase
-      - name: Distribute to Firebase
+      # 9️⃣ Distribution Firebase
+      - name: Distribute APK
         run: bundle exec fastlane android distribute
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
