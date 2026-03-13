@@ -5,25 +5,27 @@ platform :android do
   desc "Build APK et envoyer sur Firebase"
   lane :distribute do
 
-    # ── Build debug APK
+    # ── Build debug APK (ou assembleRelease pour release)
     gradle(
-      task: "assembleDebug",
+      task: "assembleDebug",       # change en "assembleRelease" si tu veux une version release
       project_dir: "./android",
       print_command: true
     )
 
     # ── Chemin exact de l'APK généré
     apk_path = "./android/app/build/outputs/apk/debug/app-debug.apk"
+    # pour release, ce serait par exemple:
+    # apk_path = "./android/app/build/outputs/apk/release/app-release.apk"
 
-    # ── Upload sur Firebase App Distribution avec token
+    # ── Upload sur Firebase App Distribution
     firebase_app_distribution(
-      app: ENV["FIREBASE_APP_ID"],          # Firebase App ID (depuis GitHub Secrets)
-      testers: ENV["FIREBASE_TESTERS"],     # Emails des testeurs séparés par des virgules
-      token: ENV["FIREBASE_TOKEN"],         # <- correct
+      app: ENV["FIREBASE_APP_ID"],            # Firebase App ID depuis GitHub Secrets
+      testers: ENV["FIREBASE_TESTERS"],       # Emails testeurs séparés par des virgules
+      firebase_cli_token: ENV["FIREBASE_TOKEN"], # Token correct pour Fastlane
       release_notes: "Nouvelle version automatique",
       apk_path: apk_path,
-      upload_timeout: 1200, # 20 minutes
-      debug: true           # Affiche tous les logs d'upload
+      upload_timeout: 1200,   # 20 minutes
+      debug: true             # Affiche tous les logs d'upload
     )
 
   end
