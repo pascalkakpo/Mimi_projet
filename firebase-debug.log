@@ -1,0 +1,31 @@
+[debug] [2026-03-13T17:50:13.933Z] ----------------------------------------------------------------------
+[debug] [2026-03-13T17:50:13.937Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\HP\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login:ci
+[debug] [2026-03-13T17:50:13.937Z] CLI Version:   15.10.0
+[debug] [2026-03-13T17:50:13.937Z] Platform:      win32
+[debug] [2026-03-13T17:50:13.938Z] Node Version:  v20.20.0
+[debug] [2026-03-13T17:50:13.938Z] Time:          Fri Mar 13 2026 18:50:13 GMT+0100 (heure normale d’Europe centrale)
+[debug] [2026-03-13T17:50:13.938Z] ----------------------------------------------------------------------
+[debug] 
+[warn] !  Authenticating with a `login:ci` token is deprecated and will be removed in a future major version of `firebase-tools`. Instead, use a service account key with `GOOGLE_APPLICATION_CREDENTIALS`: https://cloud.google.com/docs/authentication/getting-started 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=1019657103&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
+[debug] [2026-03-13T17:54:48.417Z] >>> [apiv2][query] POST https://auth.firebase.tools/attest [none]
+[debug] [2026-03-13T17:54:48.418Z] >>> [apiv2][body] POST https://auth.firebase.tools/attest {"session_id":"f1cf0671-2a98-4e8d-aaca-e6c8978c3243"}
+[debug] [2026-03-13T17:54:49.410Z] <<< [apiv2][status] POST https://auth.firebase.tools/attest 200
+[debug] [2026-03-13T17:54:49.411Z] <<< [apiv2][body] POST https://auth.firebase.tools/attest {"token":"q32Gra442i3k1T8kI_7ujgxVdyO89--lLqGLctQypZk"}
+[info] 
+[info] To sign in to the Firebase CLI:
+[info] 
+[info] 1. Take note of your session ID:
+[info] 
+[info]    F1CF0
+[info] 
+[info] 2. Visit the URL below on any device and follow the instructions to get your code:
+[info] 
+[info]    https://auth.firebase.tools/login?code_challenge=iPbxTKSphF4hXHCFnOD4ikW7AL4FA86DRunXP7klEjU&session=f1cf0671-2a98-4e8d-aaca-e6c8978c3243&attest=q32Gra442i3k1T8kI_7ujgxVdyO89--lLqGLctQypZk
+[info] 
+[info] 3. Paste or enter the authorization code below once you have it:
+[info] 

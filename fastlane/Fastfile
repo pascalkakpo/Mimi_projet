@@ -19,7 +19,7 @@ platform :android do
     firebase_app_distribution(
       app: ENV["FIREBASE_APP_ID"],          # Firebase App ID (depuis GitHub Secrets)
       testers: ENV["FIREBASE_TESTERS"],     # Emails des testeurs séparés par des virgules
-      firebase_cli_token: ENV["FIREBASE_TOKEN"], # Token généré avec 'firebase login:ci'
+      token: ENV["FIREBASE_TOKEN"],         # <- correct
       release_notes: "Nouvelle version automatique",
       apk_path: apk_path,
       upload_timeout: 1200, # 20 minutes
