@@ -29,16 +29,22 @@ jobs:
           bundle install
           npm install -g firebase-tools
 
-      # 4️⃣ Setup Android SDK
-      - name: Setup Android SDK
-        uses: reactivecircus/android-emulator-runner@v2
+      # 4️⃣ Setup Java & Gradle
+      - name: Setup JDK
+        uses: actions/setup-java@v3
         with:
-          api-level: 33
-          target: google_apis
-          arch: x86_64
-          force-avd-creation: true
+          distribution: 'temurin'
+          java-version: '17'
 
-      # 5️⃣ Build et distribution automatique
+      - name: Install Gradle
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          wget https://services.gradle.org/distributions/gradle-8.3-bin.zip -P /tmp
+          unzip -qq /tmp/gradle-8.3-bin.zip -d /opt/gradle
+          echo "/opt/gradle/gradle-8.3/bin" >> $GITHUB_PATH
+
+      # 5️⃣ Build et distribution automatique via Fastlane
       - name: Build & distribute via Fastlane
         env:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
